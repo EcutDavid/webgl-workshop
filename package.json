@@ -27,6 +27,7 @@
     "babel-core": "^6.0.0",
     "babel-eslint": "^6.0.0",
     "babel-loader": "^6.0.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-es2015-parameters": "^6.9.0",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-polyfill": "^6.3.14",
