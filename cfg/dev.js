@@ -5,9 +5,6 @@ let webpack = require('webpack')
 let baseConfig = require('./base')
 let defaultSettings = require('./defaults')
 
-// Add needed plugins here
-let BowerWebpackPlugin = require('bower-webpack-plugin')
-
 let config = Object.assign({}, baseConfig, {
   entry: [
     'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
@@ -19,9 +16,6 @@ let config = Object.assign({}, baseConfig, {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new BowerWebpackPlugin({
-      searchResolveModulesDirectories: false
-    })
   ],
   module: defaultSettings.getDefaultModules()
 })
