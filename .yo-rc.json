@@ -1,8 +1,0 @@
-{
-  "generator-react-webpack": {
-    "appName": "personalSite",
-    "style": "scss",
-    "postcss": true,
-    "generatedWithVersion": 3
-  }
-}
