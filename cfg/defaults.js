@@ -12,10 +12,10 @@ function getDefaultModules() {
         test: /\.scss/,
         loader: 'style-loader!css-loader!postcss-loader!sass-loader?outputStyle=expanded'
       }, {
-        test: /\.(png|jpg|gif|woff|woff2)$/,
+        test: /\.(png|jpg|gif|woff|woff2|ttf)(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url-loader?limit=8192'
       }, {
-        test: /\.(mp4|ogg|svg)$/,
+        test: /\.(mp4|ogg|svg|eot)(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'file-loader'
       }
     ]
