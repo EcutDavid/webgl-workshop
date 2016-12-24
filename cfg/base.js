@@ -1,36 +1,36 @@
 'use strict'
-let path = require('path')
-let defaultSettings = require('./defaults')
+var path = require('path')
+var defaultSettings = require('./defaults')
 
-let additionalPaths = []
+var additionalPaths = []
+var srcPath = path.join(__dirname, '/../src')
 
 module.exports = {
   additionalPaths: additionalPaths,
-  port: defaultSettings.port,
+  port: 8100,
   debug: true,
   devtool: 'eval',
   output: {
     path: path.join(__dirname, '/../dist/assets'),
     filename: 'app.js',
-    publicPath: `.${defaultSettings.publicPath}`
+    publicPath: './assets/'
   },
   devServer: {
     contentBase: './src/',
     historyApiFallback: true,
     hot: true,
-    port: defaultSettings.port,
-    publicPath: defaultSettings.publicPath,
-    noInfo: false
+    port: 8100,
+    publicPath: '/assets/',
+    noInfo: true
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
     alias: {
-      actions: `${defaultSettings.srcPath}/actions/`,
-      components: `${defaultSettings.srcPath}/components/`,
-      sources: `${defaultSettings.srcPath}/sources/`,
-      stores: `${defaultSettings.srcPath}/stores/`,
-      styles: `${defaultSettings.srcPath}/styles/`,
-      config: `${defaultSettings.srcPath}/config/` + process.env.REACT_WEBPACK_ENV
+      actions: `${srcPath}/actions/`,
+      components: `${srcPath}/components/`,
+      sources: `${srcPath}/sources/`,
+      stores: `${srcPath}/stores/`,
+      styles: `${srcPath}/styles/`
     }
   },
   module: {},

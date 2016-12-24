@@ -1,13 +1,13 @@
 'use strict'
 
-let path = require('path')
-let webpack = require('webpack')
-let baseConfig = require('./base')
-let defaultSettings = require('./defaults')
+var path = require('path')
+var webpack = require('webpack')
+var baseConfig = require('./base')
+var defaultSettings = require('./defaults')
 
-let config = Object.assign({}, baseConfig, {
+var config = Object.assign({}, baseConfig, {
   entry: [
-    'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
+    'webpack-dev-server/client?http://127.0.0.1:8100',
     'webpack/hot/only-dev-server',
     './src/index'
   ],
@@ -15,7 +15,7 @@ let config = Object.assign({}, baseConfig, {
   devtool: 'eval-source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoErrorsPlugin()
   ],
   module: defaultSettings.getDefaultModules()
 })
