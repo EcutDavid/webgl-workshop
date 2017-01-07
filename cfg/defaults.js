@@ -1,4 +1,3 @@
-'use strict'
 function getDefaultModules() {
   return {
     loaders: [
@@ -16,8 +15,8 @@ function getDefaultModules() {
         loader: 'file-loader'
       }
     ]
-  }
+  };
 }
 module.exports = {
   getDefaultModules: getDefaultModules
-}
+};

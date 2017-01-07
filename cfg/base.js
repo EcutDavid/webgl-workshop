@@ -1,9 +1,7 @@
-'use strict'
-var path = require('path')
-var defaultSettings = require('./defaults')
+var path = require('path');
 
-var additionalPaths = []
-var srcPath = path.join(__dirname, '/../src')
+var additionalPaths = [];
+var srcPath = path.join(__dirname, '/../src');
 
 module.exports = {
   additionalPaths: additionalPaths,
@@ -38,6 +36,6 @@ module.exports = {
     return [
       require('precss'),
       require('autoprefixer')
-    ]
+    ];
   }
-}
+};

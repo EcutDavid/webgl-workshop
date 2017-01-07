@@ -1,16 +1,20 @@
-import React from 'react'
-import 'normalize.css/normalize.css'
+import React from 'react';
 
-import 'styles/app.scss'
+import 'styles/main.scss';
 
 class AppComponent extends React.Component {
   render() {
     return (
       <div className="index">
-        <button className="button">Hello human</button>
+        <button
+          className="button"
+          style={{ display: 'block', margin: '30px auto' }}
+        >
+          Hello world!
+        </button>
       </div>
-    )
+    );
   }
 }
 
-export default AppComponent
+export default AppComponent;

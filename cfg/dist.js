@@ -1,10 +1,8 @@
-'use strict'
+var path = require('path');
+var webpack = require('webpack');
 
-var path = require('path')
-var webpack = require('webpack')
-
-var baseConfig = require('./base')
-var defaultSettings = require('./defaults')
+var baseConfig = require('./base');
+var defaultSettings = require('./defaults');
 
 var config = Object.assign({}, baseConfig, {
   entry: path.join(__dirname, '../src/index'),
@@ -21,7 +19,7 @@ var config = Object.assign({}, baseConfig, {
     new webpack.NoErrorsPlugin()
   ],
   module: defaultSettings.getDefaultModules()
-})
+});
 
 // Add needed loaders to the defaults here
 config.module.loaders.push({
@@ -31,6 +29,6 @@ config.module.loaders.push({
     config.additionalPaths,
     [ path.join(__dirname, '/../src') ]
   )
-})
+});
 
-module.exports = config
+module.exports = config;
