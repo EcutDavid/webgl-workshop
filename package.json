@@ -4,7 +4,7 @@
   "description": "",
   "main": "",
   "scripts": {
-    "dist": "webpack --env=dist",
+    "dist": "rimraf dist && webpack --env=dist",
     "lint": "eslint ./src",
     "serve:dist": "node server.js --env=dist",
     "start": "node server.js --env=dev",
@@ -17,6 +17,7 @@
     "eslint": "^2.2.0",
     "eslint-plugin-react": "^5.0.0",
     "gh-pages": "^0.12.0",
+    "html-webpack-plugin": "^2.28.0",
     "open": "0.0.5",
     "react-hot-loader": "^1.2.9",
     "webpack-dev-server": "^1.12.0"
@@ -48,7 +49,7 @@
     "precss": "^1.4.0",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
-    "rimraf": "^2.4.3",
+    "rimraf": "^2.6.1",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.6",
