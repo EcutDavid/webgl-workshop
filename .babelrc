@@ -8,5 +8,6 @@
     "transform-es2015-parameters",
     "transform-object-rest-spread",
     "transform-decorators-legacy",
+    "react-hot-loader/babel"
   ]
 }
