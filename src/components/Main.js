@@ -10,13 +10,7 @@ class AppComponent extends React.Component {
           className="button"
           style={{ display: 'block', margin: '30px auto' }}
         >
-          Hello world
-        </button>
-        <button
-          className="button"
-          style={{ display: 'block', margin: '30px auto' }}
-        >
-          Hello world
+          Hello jenkins
         </button>
       </div>
     );
