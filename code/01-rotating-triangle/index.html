@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WebGL 01</title>
+  <style>
+    canvas {
+      display: block;
+      margin: 100px auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="600" height="600"></canvas>
+  <script>
+    /*
+      * STEP 1
+      * Access WebGL context
+    */
+    const canvasDom = document.querySelector('canvas');
+    const gl = canvasDom.getContext('webgl');
+
+    const canvasWidth = canvasDom.clientWidth;
+    const canvasHeight = canvasDom.clientHeight;
+    // Set viewport when it comes to canvas resizing
+    // gl.viewport(0, 0, canvasWidth, canvasHeight)
+    gl.clearColor(1, 1, 1, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    /*
+      * STEP 2
+      * Create shaders and link program
+    */
+    function createShader(gl, type, shaderSource) {
+      const shader = gl.createShader(type);
+      gl.shaderSource(shader, shaderSource);
+      gl.compileShader(shader);
+
+      const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+      if(!success) {
+        console.warn(gl.getShaderInfoLog(shader));
+        gl.deleteShader(shader);
+      }
+
+      return shader;
+    }
+
+    // vec2 = a vector which length is 2
+    const vertexShaderSource = `
+      // An attribute will receive data from a buffer
+      attribute vec2 position;
+      uniform vec2 resolution;
+      varying vec4 v_color;
+
+      void main() {
+        vec2 glSpacePosition = (position / resolution) * 2.0 - 1.0;
+
+        gl_Position = vec4(glSpacePosition * vec2(1, -1), 0, 1);
+        v_color = gl_Position * 0.5 + 0.5 * cos(0.0);
+      }
+    `;
+
+    const fragmentShaderSource = `
+      precision mediump float;
+      varying vec4 v_color;
+
+      void main() {
+        gl_FragColor = v_color;
+      }
+    `;
+
+    const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+    const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+    function createProgram(gl, vertexShader, fragmentShader) {
+      const program = gl.createProgram();
+      gl.attachShader(program, vertexShader);
+      gl.attachShader(program, fragmentShader);
+      gl.linkProgram(program);
+
+      const success = gl.getProgramParameter(program, gl.LINK_STATUS);
+      if(!success) {
+        console.warn(gl.getProgramInfoLog(program));
+        gl.deleteProgram(program);
+      }
+
+      return program;
+    }
+    const program = createProgram(gl, vertexShader, fragmentShader);
+
+    /*
+      * STEP 3
+      * Configuration
+    */
+    gl.useProgram(program);
+    const positionAttributeLocation = gl.getAttribLocation(program, 'position');
+    gl.enableVertexAttribArray(positionAttributeLocation);
+
+    const positionBuffer = gl.createBuffer();
+    // In WebGL, we can manipulate many resources on global bind points.
+    // Treat bind points as internal global variables hooks inside WebGL.
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
+    // gl.vertexAttribPointer(location, size, type, normalize, stride, offset)
+    gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+    const resolutionUniformLocation = gl.getUniformLocation(program, 'resolution');
+    gl.uniform2f(resolutionUniformLocation, canvasWidth, canvasHeight);
+
+    /*
+      * STEP 4
+      * Bind data and call drawArrays
+    */
+    let angle = 0;
+    function draw() {
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      const pointList = [];
+
+      let centerX = canvasWidth / 2;
+      let centerY = canvasHeight / 2;
+
+      pointList.push(centerX + canvasWidth * Math.sin(angle));
+      pointList.push(centerY - canvasHeight / 2 * Math.cos(angle));
+      pointList.push(centerX + canvasWidth / 2);
+      pointList.push(centerY);
+      pointList.push(centerX - canvasWidth / 2);
+      pointList.push(centerY);
+
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(pointList), gl.STATIC_DRAW);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      angle += 0.005;
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  </script>
+</body>
+</html>
