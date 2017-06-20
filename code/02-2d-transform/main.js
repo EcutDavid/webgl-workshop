@@ -131,7 +131,7 @@ function drawRandomizedTriangles() {
   gl.uniformMatrix3fv(transformMatUniformLocation, false, Matrix.multiply(Matrix.rotation(0.005 * counter), Matrix.translation(100, 210)));
   gl.drawArrays(gl.TRIANGLES, 0, trianglePointList.length/2);
 
-  gl.uniformMatrix3fv(transformMatUniformLocation, false, Matrix.multiply(Matrix.scaling(0.005 * counter % 1, 0.005 * counter), Matrix.translation(100, 350)));
+  gl.uniformMatrix3fv(transformMatUniformLocation, false, Matrix.multiply(Matrix.scaling(0.005 * counter % 1, 0.005 * counter % 1), Matrix.translation(100, 350)));
   gl.drawArrays(gl.TRIANGLES, 0, trianglePointList.length/2);
 
   requestAnimationFrame(drawRandomizedTriangles);
