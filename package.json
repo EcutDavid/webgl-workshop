@@ -4,7 +4,7 @@
   "description": "",
   "main": "",
   "scripts": {
-    "dist": "rimraf dist && webpack --env=dist",
+    "dist": "rimraf docs && webpack --env=dist",
     "lint": "eslint ./src",
     "serve:dist": "node server.js --env=dist",
     "start": "PORT=8300 webpack-dev-server  --env=dev",
