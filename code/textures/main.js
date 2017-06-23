@@ -9,44 +9,44 @@ const canvasWidth = canvasDom.clientWidth;
 const canvasHeight = canvasDom.clientHeight;
 // Set viewport when it comes to canvas resizing
 // gl.viewport(0, 0, canvasWidth, canvasHeight)
-gl.clearColor(1, 1, 1, 1);
+gl.clearColor(0, 0, 0, 1);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
 let geometryPoints = [
-  -100.0, -100.0,  100.0,
-   100.0, -100.0,  100.0,
-   100.0,  100.0,  100.0,
-  -100.0,  100.0,  100.0,
+  -15.0, -15.0,  15.0,
+   15.0, -15.0,  15.0,
+   15.0,  15.0,  15.0,
+  -15.0,  15.0,  15.0,
 
   // Back face
-  -100.0, -100.0, -100.0,
-  -100.0,  100.0, -100.0,
-   100.0,  100.0, -100.0,
-   100.0, -100.0, -100.0,
+  -15.0, -15.0, -15.0,
+  -15.0,  15.0, -15.0,
+   15.0,  15.0, -15.0,
+   15.0, -15.0, -15.0,
 
   // Top face
-  -100.0,  100.0, -100.0,
-  -100.0,  100.0,  100.0,
-   100.0,  100.0,  100.0,
-   100.0,  100.0, -100.0,
+  -15.0,  15.0, -15.0,
+  -15.0,  15.0,  15.0,
+   15.0,  15.0,  15.0,
+   15.0,  15.0, -15.0,
 
   // Bottom face
-  -100.0, -100.0, -100.0,
-   100.0, -100.0, -100.0,
-   100.0, -100.0,  100.0,
-  -100.0, -100.0,  100.0,
+  -15.0, -15.0, -15.0,
+   15.0, -15.0, -15.0,
+   15.0, -15.0,  15.0,
+  -15.0, -15.0,  15.0,
 
   // Right face
-   100.0, -100.0, -100.0,
-   100.0,  100.0, -100.0,
-   100.0,  100.0,  100.0,
-   100.0, -100.0,  100.0,
+   15.0, -15.0, -15.0,
+   15.0,  15.0, -15.0,
+   15.0,  15.0,  15.0,
+   15.0, -15.0,  15.0,
 
   // Left face
-  -100.0, -100.0, -100.0,
-  -100.0, -100.0,  100.0,
-  -100.0,  100.0,  100.0,
-  -100.0,  100.0, -100.0
+  -15.0, -15.0, -15.0,
+  -15.0, -15.0,  15.0,
+  -15.0,  15.0,  15.0,
+  -15.0,  15.0, -15.0
 ];
 
 const textureCoords = [
@@ -109,11 +109,14 @@ const vertexShaderSource = `
   varying vec2 v_color;
   varying vec4 v_pos;
   uniform mat4 transformMat;
+  uniform mat4 cameraMat;
 
   void main() {
-    vec4 transformedPosition = transformMat * position;
+    vec4 transformedPosition = transformMat * cameraMat * position;
     vec4 glSpacePosition = (transformedPosition / resolution) * 2.0 - 1.0;
 
+    float xyDivision = 1.0 + 0.5 * glSpacePosition.z;
+    glSpacePosition = vec4(glSpacePosition.xy / xyDivision, glSpacePosition.z, 1);
     gl_Position = vec4(glSpacePosition.xyz * vec3(1, -1, 1), 1);
     v_pos = position / 60.0 + 0.5;
     v_color = a_cord;
@@ -128,7 +131,6 @@ const fragmentShaderSource = `
   uniform float lineIndicator;
 
   void main() {
-    gl_FragColor = v_pos;
     gl_FragColor = texture2D(u_texture, v_color.xy);
   }
 `;
@@ -163,6 +165,7 @@ gl.enableVertexAttribArray(positionAttributeLocation);
 const cordAttributeLocation = gl.getAttribLocation(program, 'a_cord');
 gl.enableVertexAttribArray(cordAttributeLocation);
 const transformMatUniformLocation = gl.getUniformLocation(program, 'transformMat');
+const cameraMatUniformLocation = gl.getUniformLocation(program, 'cameraMat');
 
 const positionBuffer = gl.createBuffer();
 // In WebGL, we can manipulate many resources on global bind points.
@@ -177,14 +180,14 @@ gl.vertexAttribPointer(cordAttributeLocation, 2, gl.FLOAT, false, 0, 0);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(cordBuffer), gl.STATIC_DRAW);
 const resolutionUniformLocation = gl.getUniformLocation(program, 'resolution');
 const lineIndicatorUniformLocation = gl.getUniformLocation(program, 'lineIndicator');
-gl.uniform4f(resolutionUniformLocation, canvasWidth, canvasHeight, 600, 1);
+gl.uniform4f(resolutionUniformLocation, canvasWidth, canvasHeight, 1200, 1);
 
 const texture = gl.createTexture();
 texture.image = new Image();
 texture.image.onload = function() {
   handleLoadedTexture(texture)
 }
-texture.image.src = "2.jpg";
+texture.image.src = "github.jpg";
 
 function handleLoadedTexture(texture) {
   gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -213,26 +216,34 @@ const cubeVertexIndices = [
 const cubeVertexIndexBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeVertexIndices), gl.STATIC_DRAW);
+gl.bindBuffer(gl.ARRAY_BUFFER, cordBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(geometryPoints), gl.STATIC_DRAW);
 function draw() {
-  gl.clear(gl.COLOR_BUFFER_BIT);
-  const CUBE_WIDTH = 500;
-  const CUBE_HEIGHT = 500;
-  const CUBE_DEPTH = 500;
-  const CUBE_MARGIN = 0;
+  gl.clear(gl.COLOR_BUFFER_BIT  | gl.DEPTH_BUFFER_BIT);
 
-  const rotationMatrix = Matrix.xRotate(Matrix.zRotation(angle), angle);
-  gl.uniformMatrix4fv(transformMatUniformLocation, false,
-      Matrix.translate(
-        Matrix.multiply(Matrix.translation(0, 0, 0), rotationMatrix),
-        200, 200, 200
-      )
-  );
-  gl.bindBuffer(gl.ARRAY_BUFFER, cordBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(geometryPoints), gl.STATIC_DRAW);
-  gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
-  angle += 0.01;
+  const rotationMatrix = Matrix.yRotate(Matrix.zRotation(angle), angle);
+  for (let i = 6; i < 420 / 35; i++) {
+    for (let j = 6; j < 420 / 35; j++) {
+      for (let k = 6; k < 420 / 35; k++) {
+        gl.uniformMatrix4fv(transformMatUniformLocation, false,
+            Matrix.translate(
+              Matrix.multiply(Matrix.translation(0, 0, 0), rotationMatrix),
+              0 + 40 * i, 0 +40 * j, 0 + 40 * k
+            )
+        );
+        gl.uniformMatrix4fv(
+          cameraMatUniformLocation,
+          false,
+          Matrix.multiply(Matrix.translation(0, 0, 0), Matrix.xRotation(angle))
+        );
+
+        gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
+      }
+    }
+  }
+  angle += 0.048;
   requestAnimationFrame(draw);
 }
 
