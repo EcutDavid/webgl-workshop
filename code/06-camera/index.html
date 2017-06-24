@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>WebGL 06</title>
+  <style>
+    body {
+      text-align: center;
+    }
+    canvas {
+      display: block;
+      margin: 100px auto;
+    }
+    span {
+      display: inline-block;
+      width: 60px;
+    }
+  </style>
+</head>
+<body>
+  <canvas width='600' height='600'></canvas>
+  Camera X: <input type='range' id='cameraTransX' min='-600' max='600' value='0'/> <span id='cameraTransXValue'>0</span><br />
+  Camera Y: <input type='range' id='cameraTransY' min='-600' max='600' value='0' /> <span id='cameraTransYValue'>0</span><br />
+  Camera Z: <input type='range' id='cameraTransZ' min='-200' max='200' value='200' /> <span id='cameraTransZValue'>-200</span>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.3.2/gl-matrix-min.js'></script>
+  <script src='main.js'></script>
+</body>
+</html>
