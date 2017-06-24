@@ -99,7 +99,6 @@ const vertexShaderSource = `
   attribute vec4 position;
   uniform vec4 resolution;
   varying vec2 v_cord;
-  varying vec4 v_pos;
   uniform mat4 transformMat;
 
   void main() {
@@ -109,7 +108,6 @@ const vertexShaderSource = `
     float xyDivision = 1.0 - 0.1 * glSpacePosition.z;
     glSpacePosition = vec4(glSpacePosition.xy / xyDivision, glSpacePosition.z, 1);
     gl_Position = vec4(glSpacePosition.xyz * vec3(1, -1, 1), 1);
-    v_pos = position / 60.0 + 0.5;
     v_cord = a_cord;
   }
 `;
@@ -117,7 +115,6 @@ const vertexShaderSource = `
 const fragmentShaderSource = `
   precision mediump float;
   varying vec2 v_cord;
-  varying vec4 v_pos;
   uniform sampler2D u_texture;
   uniform float lineIndicator;
 
