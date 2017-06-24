@@ -1,0 +1,35 @@
+.NavigationBar {
+  display: block;
+  top: calc(100vh - 100px);
+  width: 100vw;
+  position: fixed;
+  text-align: center;
+  z-index: 4;
+
+  .navigator {
+    display: inline-block;
+    width: 100px;
+    cursor: pointer;
+    background: #fff;
+    opacity: 0.8;
+    border: 1px solid grey;
+    margin-left: 10px;
+    transition: background-color 2s;
+    &:nth-child(1) {
+      margin-left: 0;
+    }
+
+    &:hover {
+      background-color: skyblue;
+    }
+
+    p {
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      margin: 0;
+      z-index: 10;
+    }
+  }
+  font-family: "Maison Mono", Helvetica, sans-serif, Arial;
+}
