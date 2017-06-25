@@ -4,145 +4,167 @@ import 'styles/main.scss';
 import CodeMirror from 'codemirror/lib/codemirror';
 import Header from './Header';
 import NavigationBar from './NavigationBar';
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../constants/canvas';
+import { createProgram, createShader } from '../helpers/webglUtil';
 
-const code =
-`class Matrix {
-  static identity() {
-    return [
-      1, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, 1
-    ];
-  }
-
-  static xRotation(angleInRadians) {
-    const c = Math.cos(angleInRadians);
-    const s = Math.sin(angleInRadians);
-
-    return [
-      1, 0, 0, 0,
-      0, c, s, 0,
-      0, -s, c, 0,
-      0, 0, 0, 1
-    ];
-  }
-
-  static yRotation(angleInRadians) {
-    const c = Math.cos(angleInRadians);
-    const s = Math.sin(angleInRadians);
-
-    return [
-      c, 0, -s, 0,
-      0, 1, 0, 0,
-      s, 0, c, 0,
-      0, 0, 0, 1
-    ];
-  }
-
-  static zRotation(angleInRadians) {
-    const c = Math.cos(angleInRadians);
-    const s = Math.sin(angleInRadians);
-    return [
-      c, -s, 0, 0,
-      s, c, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, 1
-    ];
-  }
-
-  static scaling(sx, sy, sz) {
-    return [
-      sx, 0,  0,  0,
-      0, sy,  0,  0,
-      0,  0, sz,  0,
-      0,  0,  0,  1
-    ];
-  }
-
-  static translation(tx, ty, tz) {
-    return [
-      1,  0,  0,  0,
-      0,  1,  0,  0,
-      0,  0,  1,  0,
-      tx, ty, tz, 1
-    ];
-  }
-
-  static translate(m, tx, ty, tz) {
-    return Matrix.multiply(m, Matrix.translation(tx, ty, tz));
-  }
-
-  static xRotate(m, angleInRadians) {
-    return Matrix.multiply(m, Matrix.xRotation(angleInRadians));
-  }
-
-  static yRotate(m, angleInRadians) {
-    return Matrix.multiply(m, Matrix.yRotation(angleInRadians));
-  }
-
-  static zRotate(m, angleInRadians) {
-    return Matrix.multiply(m, Matrix.zRotation(angleInRadians));
-  }
-
-  static scale(m, sx, sy, sz) {
-    return Matrix.multiply(m, Matrix.scaling(sx, sy, sz));
-  }
-
-  static perspective(fieldOfViewInRadians, aspect, near, far) {
-    var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
-    var rangeInv = 1.0 / (near - far);
-
-    return [
-      f / aspect, 0, 0, 0,
-      0, f, 0, 0,
-      0, 0, (near + far) * rangeInv, -1,
-      0, 0, near * far * rangeInv * 2, 0
-    ];
-  }
-
-  static multiply(mat1, mat2) {
-    const length = Math.sqrt(mat1.length);
-    const result = [];
-    for (let i = 0; i < length; i++) {
-      for (let j = 0; j < length; j++) {
-        let value = 0;
-        for (let k = 0; k < length; k++) {
-          value += mat1[i * length + k] * mat2[k * length + j];
-        }
-        result[i * length + j] = value;
-      }
+const getStarted =
+`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>WebGL Workshop</title>
+  <style>
+    canvas {
+      display: block;
+      margin: 50px auto;
     }
-    return result;
-  }
-}`;
+  </style>
+</head>
+<body>
+  <canvas width="500" height="500"></canvas>
+  <script>
+  </script>
+</body>
+</html>`;
+
+function initWebGL(selector) {
+  const canvasDom = document.querySelector(selector);
+  const gl = canvasDom.getContext('webgl');
+  gl.clearColor(0, 0, 0, 1);
+  canvasDom.width = CANVAS_WIDTH;
+  canvasDom.height = CANVAS_HEIGHT;
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.DEPTH_TEST);
+  gl.viewport(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  return gl;
+}
+
+function loadCode(code, selector, isJs = true) {
+  return CodeMirror(document.querySelector(selector), {
+    value: code,
+    mode: isJs ? 'javascript' : 'htmlmixed',
+    theme: 'mdn-like',
+    readOnly: 'true'
+  });
+}
 
 class Main extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      getCanvas: {
+        isES6: true
+      }
+    };
+  }
+
   componentDidMount() {
-    CodeMirror(document.querySelector('#code'), {
-      value: code,
-      // lineNumbers: true,
-      // htmlmixed supported
-      mode: 'javascript',
-      theme: 'mdn-like',
-      readOnly: 'true'
+    const gl = initWebGL('#demo1');
+    const triangleVertextShader = `
+      attribute vec2 position;
+      varying vec4 v_color;
+
+      void main() {
+        gl_Position = vec4(position, 0, 1);
+        v_color = gl_Position * 0.5 + 0.5;
+      }
+    `;
+    const triangleFragmentShader = `
+      precision mediump float;
+      varying vec4 v_color;
+
+      void main() {
+        gl_FragColor = v_color;
+      }
+    `;
+    let vertexShader = createShader(gl, gl.VERTEX_SHADER, triangleVertextShader);
+    let fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, triangleFragmentShader);
+    const program = createProgram(gl, vertexShader, fragmentShader);
+    gl.useProgram(program);
+
+    const positionAttributeLocation = gl.getAttribLocation(program, 'position');
+    gl.enableVertexAttribArray(positionAttributeLocation);
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+    const pointList = [
+      -1, 0,
+      1, 0,
+      0, 1,
+      -1, -1,
+      0, -1,
+      -0.5, 0,
+      1, -1,
+      0, -1,
+      0.5, 0
+    ];
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(pointList), gl.STATIC_DRAW);
+    gl.drawArrays(gl.TRIANGLES, 0, pointList.length / 2);
+
+    loadCode(getStarted, '#htmlSetup', false);
+
+    const getCanvasES6 = `
+    function initWebGL(selector) {
+      const canvasDom = document.querySelector(selector);
+      const gl = canvasDom.getContext('webgl');
+      gl.clearColor(0, 0, 0, 1);
+      canvasDom.width = CANVAS_WIDTH;
+      canvasDom.height = CANVAS_HEIGHT;
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.enable(gl.DEPTH_TEST);
+      gl.viewport(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      return gl;
+    }
+
+    const gl = initWebGL('canvas');
+    `;
+    let mirror = loadCode(getCanvasES6, '#getCanvasES6');
+    const getCanvasES5 = `
+    function initWebGL(selector) {
+      var canvasDom = document.querySelector(selector);
+      var gl = canvasDom.getContext('webgl');
+      gl.clearColor(0, 0, 0, 1);
+      canvasDom.width = CANVAS_WIDTH;
+      canvasDom.height = CANVAS_HEIGHT;
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.enable(gl.DEPTH_TEST);
+      gl.viewport(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      return gl;
+
+      var gl = initWebGL('canvas');
+    }`;
+    this.setState({getCanvas: {...this.state.getCanvas, mirror, es6: getCanvasES6, es5: getCanvasES5}});
+  }
+
+  switchES6(key) {
+    const {isES6, mirror, es6, es5} = this.state[key];
+    mirror.setValue(isES6 ? es5 : es6);
+    this.setState({
+      [key]: {...this.state[key], isES6: !isES6}
     });
   }
 
   render() {
+    const {
+      getCanvas,
+    } = this.state;
     return (
       <div>
         <Header />
         <div className='workshop-content'>
           <h2 id='sec1'>2D Triangles</h2>
+          <h3>Final result of this section</h3>
+          <canvas className='demo-canvas' id='demo1'></canvas>
           <h3>WebGL context</h3>
-          <p>blablabla</p>
-          <p>blablabla</p>
-          <p>blablabla</p>
-          <p>blablabla</p>
-          <div className='codeblock' id='code'></div>
+          <p>Let's get started with HTML, to keep this workshop simple, we will put all code in a single file, <b>please do not follow this practice in real-life project</b>,</p>
+          <div className='codeblock' id='htmlSetup'></div>
+          <p>From now on, we will just work in the script tag, use the "Switch to ES5" button if your browsers does not support, <b>in real-life, we will transform code to ES5 for sure.</b></p>
+          <p>Get the WebGL context from canvas.</p>
+          <button className='button' onClick={this.switchES6.bind(this, 'getCanvas')}>
+            Switch to ES{getCanvas.isES6 ? '5' : '6'}
+          </button>
+          <div className='codeblock' id='getCanvasES6'></div>
           <h3>Configuration</h3>
-          <p>blablabla</p>
           <p>blablabla</p>
           <p>blablabla</p>
           <p>blablabla</p>

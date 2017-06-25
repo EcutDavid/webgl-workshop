@@ -7,7 +7,7 @@
     "dist": "rimraf docs && webpack --env=dist",
     "lint": "eslint ./src",
     "serve:dist": "node server.js --env=dist",
-    "start": "PORT=8300 webpack-dev-server  --env=dev",
+    "start": "PORT=8300 webpack-dev-server --env=dev --inline",
     "deploy": "gh-pages -d dist",
     "test": "mocha --require babel-register"
   },
