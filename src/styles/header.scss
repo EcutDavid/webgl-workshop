@@ -8,8 +8,28 @@
 
   h1 {
     font-weight: bold;
-    font-size: 55px;
+    font-size: 60px;
     font-family: "Maison Mono", Helvetica, sans-serif, Arial;
-    text-shadow: 0 3px 5px rgba(0,0,0,0.50);
+    // text-shadow: 0 13px 5px rgba(0,0,0,0.50);
+    color: #fff;
+    position: relative;
+    z-index: 2;
+    cursor: default;
+  }
+
+  .cover {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    background: grey;
+    opacity: 0.5;
+  }
+
+  .header-canvas {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
   }
 }

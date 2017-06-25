@@ -54,6 +54,7 @@
   "dependencies": {
     "codemirror": "^5.27.2",
     "foundation-sites": "6.2.4-rc1",
+    "gl-matrix": "^2.3.2",
     "normalize.css": "^4.0.0",
     "react": "^15.0.0",
     "react-dom": "^15.0.0"
