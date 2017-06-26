@@ -6,20 +6,27 @@
   text-align: center;
   z-index: 4;
 
+  @media (max-width: 648px) {
+    top: calc(100vh - 130px);
+  }
+
   .navigator {
     display: inline-block;
     width: 100px;
+    box-sizing: border-box;
     cursor: pointer;
     background: #fff;
     opacity: 0.8;
     border: 1px solid grey;
     margin-left: 10px;
+    margin: 0px 4px;
     transition: background-color 2s;
-    &:nth-child(1) {
-      margin-left: 0;
+
+    @media (max-width: 648px) {
+      margin: 10px calc(16.5vw - 50px);
     }
 
-    &:hover {
+    &:hover, &.inview {
       background-color: skyblue;
     }
 

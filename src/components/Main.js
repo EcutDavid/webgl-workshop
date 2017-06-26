@@ -68,6 +68,7 @@ class Main extends React.Component {
           <p>You can use <a href='https://babeljs.io/repl/'>babeljs.io/repl</a> to transform the code to javascript engine friendlier.</p>
           <img src={babelImg}></img>
           <p>In real-life projects, we will integrate the code transformation into building process for sure.</p>
+          <h4 className='get-started'>Let's get started!</h4>
           <h2 id='sec1'>Step 1: Draw 2D Triangles</h2>
           <h3>Final result</h3>
           <canvas className='demo-canvas' id='trianglesDemo'></canvas>

@@ -56,6 +56,7 @@
     "diff-match-patch": "^1.0.0",
     "foundation-sites": "6.2.4-rc1",
     "gl-matrix": "^2.3.2",
+    "html-utilities": "^1.0.5",
     "normalize.css": "^4.0.0",
     "react": "^15.0.0",
     "react-dom": "^15.0.0"

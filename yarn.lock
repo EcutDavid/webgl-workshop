@@ -2506,6 +2506,10 @@ html-minifier@^3.2.3:
     relateurl "0.2.x"
     uglify-js "2.8.x"
 
+html-utilities@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/html-utilities/-/html-utilities-1.0.5.tgz#327fc21203e463e9c655ef33adefb5301e3368d5"
+
 html-webpack-plugin@^2.28.0:
   version "2.28.0"
   resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-2.28.0.tgz#2e7863b57e5fd48fe263303e2ffc934c3064d009"
