@@ -77,7 +77,7 @@ function createShader(gl, type, shaderSource) {
   return shader;
 }
 
-const vertextShader = \`
+const vertexShader = \`
   attribute vec2 position;
   varying vec4 v_color;
 
@@ -94,7 +94,7 @@ const fragmentShader = \`
     gl_FragColor = v_color;
   }
 \`;
-let vertexShader = createShader(gl, gl.VERTEX_SHADER, vertextShader);
+let vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShader);
 let fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShader);
 const program = createProgram(gl, vertexShader, fragmentShader);
 gl.useProgram(program);
@@ -126,7 +126,7 @@ function draw() {
 draw();`;
 
 export const ADD_RESOLUTION =
-`const vertextShader = \`
+`const vertexShader = \`
   attribute vec2 position;
   varying vec4 v_color;
 +++  uniform vec3 resolution;
@@ -165,3 +165,148 @@ export const SET_UNIFORM_RESOLUTION =
 +++  250, 0,
 +++  125, 250,
 ];`;
+
+export const ADD_TRANSLATION =
+`const trianglevertexShader = \`
+  attribute vec2 position;
+  varying vec4 v_color;
+  uniform vec3 resolution;
++++  uniform vec2 translation;
+
+  void main() {
+---    vec3 transformedPosition = vec3(position, 0) / resolution * 2.0 - 1.0;
++++    vec3 transformedPosition = vec3(position + translation, 0) / resolution * 2.0 - 1.0;
+    gl_Position = vec4(transformedPosition * vec3(1, -1, 1), 1);
+    v_color = gl_Position * 0.5 + 0.5;
+  }
+\`;
+
+...
+
+const resolutionUniformLocation = gl.getUniformLocation(program, 'resolution');
+gl.uniform3f(resolutionUniformLocation, 500, 500, 500);
+
++++ const translationUniformLocation = gl.getUniformLocation(program, 'translation');
+`;
+
+export const TRANSLATE_TRIANGLE =
+`+++let counter = 0;
+function draw() {
++++  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
++++  gl.uniform2f(translationUniformLocation, counter % 400, 0);
+  gl.drawArrays(gl.TRIANGLES, 0, pointList.length / 2);
++++  requestAnimationFrame(draw);
++++  counter++;
+}
+---draw();
++++requestAnimationFrame(draw);`;
+
+export const ROTATING_SCALING_TRIANGLE =
+`const trianglevertexShader = \`
+  attribute vec2 position;
+  varying vec4 v_color;
+  uniform vec3 resolution;
+  uniform vec2 translation;
++++  uniform vec2 scaling;
++++  uniform float angle;
+
+  void main() {
++++    float newX = (cos(angle) * position.x - sin(angle) * position.y) * scaling.x;
++++    float newY = (sin(angle) * position.x + cos(angle) * position.y) * scaling.y;
+    vec3 transformedPosition = vec3(position + translation, 0) / resolution * 2.0 - 1.0;
+    gl_Position = vec4(transformedPosition * vec3(1, -1, 1), 1);
+    v_color = gl_Position * 0.5 + 0.5;
+  }
+\`;`;
+
+export const MATRIX_3BY3 =
+`class Matrix3By3 {
+  static identity() {
+    return [
+      1, 0, 0,
+      0, 1, 0,
+      0, 0, 1
+    ];
+  }
+
+  static rotation(angle) {
+    return [
+      Math.cos(angle), -Math.sin(angle), 0,
+      Math.sin(angle), Math.cos(angle), 0,
+      0, 0, 1
+    ];
+  }
+
+  static scaling(sx, sy) {
+    return [
+      sx, 0, 0,
+      0, sy, 0,
+      0, 0, 1
+    ];
+  }
+
+  static translation(tx, ty) {
+    return [
+      1, 0, 0,
+      0, 1, 0,
+      tx, ty, 1
+    ];
+  }
+
+  static multiply(mat1, mat2) {
+    const length = Math.sqrt(mat1.length);
+    const result = [];
+    for (let i = 0; i < length; i++) {
+      for (let j = 0; j < length; j++) {
+        let value = 0;
+        for (let k = 0; k < length; k++) {
+          value += mat1[i * length + k] * mat2[k * length + j];
+        }
+        result[i * length + j] = value;
+      }
+    }
+    return result;
+  }
+}`;
+
+export const APPLYING_MATRIX_3BY3 =
+`const triangleVertextShader = \`
+  attribute vec2 position;
+  varying vec4 v_color;
+  uniform vec3 resolution;
+---  uniform vec2 translation;
+---  uniform vec2 scaling;
+---  uniform float angle;
++++  uniform mat3 transformMat;
+
+  void main() {
+---    float newX = (cos(angle) * position.x - sin(angle) * position.y) * scaling.x;
+---    float newY = (sin(angle) * position.x + cos(angle) * position.y) * scaling.y;
+---    vec3 transformedPosition = vec3(vec2(newX, newY) + translation, 0) / resolution * 2.0 - 1.0;
++++    vec3 transformedPosition =  transformMat * vec3(position, 1) / resolution * 2.0 - 1.0;
+    gl_Position = vec4(transformedPosition * vec3(1, -1, 1), 1);
+    v_color = gl_Position * 0.5 + 0.5;
+  }
+\`;
+
+...
+
+---const translationUniformLocation = gl.getUniformLocation(program, 'translation');
+---const angleUniformLocation = gl.getUniformLocation(program, 'angle');
+---const scalingUniformLocation = gl.getUniformLocation(program, 'scaling');
++++const transformMatUniformLocation = gl.getUniformLocation(program, 'transformMat');
+
+
+let counter = 0;
+function draw() {
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  let matrix = Matrix3By3.rotation(counter / 100);
+  matrix = Matrix3By3.multiply(matrix, Matrix3By3.scaling(1, 1));
+  matrix = Matrix3By3.multiply(matrix, Matrix3By3.translation(0, 0));
+  gl.uniformMatrix3fv(transformMatUniformLocation, false, matrix);
+  gl.drawArrays(gl.TRIANGLES, 0, pointList.length / 2);
+  requestAnimationFrame(draw);
+  counter++;
+}
+requestAnimationFrame(draw);
+`;

@@ -1,7 +1,7 @@
 import { initWebGL } from '../helpers/canvas';
 import { createProgram, createShader } from '../helpers/webglUtil';
 
-export default function(selector) {
+export default function(selector, transX, transY, dX, dY) {
   const gl = initWebGL(selector);
   const triangleVertextShader = `
     attribute vec2 position;
@@ -44,9 +44,9 @@ export default function(selector) {
   let counter = 0;
   function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    let matrix = Matrix3by3.translation(0.5, 0);
-    matrix = Matrix3by3.multiply(matrix, Matrix3by3.rotation(counter / 100));
-    matrix = Matrix3by3.multiply(matrix, Matrix3by3.translation(0, -0));
+    let matrix = Matrix3By3.translation(transX, transY);
+    matrix = Matrix3By3.multiply(matrix, Matrix3By3.rotation(-counter / 100));
+    matrix = Matrix3By3.multiply(matrix, Matrix3By3.translation(dX ? dX : 0, dY ? dY : 0));
     gl.uniformMatrix3fv(transformMatUniformLocation, false, matrix);
     gl.drawArrays(gl.TRIANGLES, 0, pointList.length / 2);
     requestAnimationFrame(draw);
@@ -55,7 +55,7 @@ export default function(selector) {
   requestAnimationFrame(draw);
 }
 
-class Matrix3by3 {
+class Matrix3By3 {
   static identity() {
     return [
       1, 0, 0,
