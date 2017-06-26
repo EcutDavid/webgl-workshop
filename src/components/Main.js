@@ -25,6 +25,7 @@ import axisImg from '../images/axis.png';
 import DiffMatchPatch from 'diff-match-patch';
 import drawTriangles from '../steps/drawTriangles';
 import animateTriangle from '../steps/animateTriangle';
+import animate3DShape from '../steps/animate3DShape';
 
 function loadCode(code, selector, isJs = true) {
   return CodeMirror(
@@ -50,6 +51,7 @@ class Main extends React.Component {
     animateTriangle('#animateTriangleDemo', 0.5, 0);
     animateTriangle('#animateTriangleQuestion', 0.5, 0, -1, 1);
     // TODO: 3D cube
+    animate3DShape('#transform3DShape');
   }
 
   render() {
@@ -113,7 +115,9 @@ class Main extends React.Component {
           <div className='codeblock'>{APPLYING_MATRIX_3BY3}</div>
           <canvas className='demo-canvas' id='animateTriangleQuestion'></canvas>
           <p><b>Practice: make the triangle rotating around center point.</b></p>
-          <h2 id='sec4'>Step 4: Transform 3D cube</h2>
+          <h2 id='sec4'>Step 4: Transform 3D shapes</h2>
+          <h3>Final result</h3>
+          <canvas className='demo-canvas' id='transform3DShape'></canvas>
           <h2 id='sec5'>Step 5: Implement User Interactions</h2>
           <h2 id='sec6'>What's Next?</h2>
         </div>

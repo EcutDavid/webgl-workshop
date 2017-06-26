@@ -23,11 +23,11 @@ export default class NavigationBar extends React.Component {
         </a>
         <a className='navigator' href='#sec4'>
           <p>04</p>
-          <p>3D Cube</p>
+          <p>3D Shapes</p>
         </a>
         <a className='navigator' href='#sec5'>
           <p>05</p>
-          <p>User Interaction</p>
+          <p>User Interactions</p>
         </a>
         <a className='navigator' href='#sec6'>
           <p>06</p>

@@ -77,7 +77,7 @@ function createShader(gl, type, shaderSource) {
   return shader;
 }
 
-const vertexShader = \`
+const vertexShaderSrc = \`
   attribute vec2 position;
   varying vec4 v_color;
 
@@ -86,7 +86,7 @@ const vertexShader = \`
     v_color = gl_Position * 0.5 + 0.5;
   }
 \`;
-const fragmentShader = \`
+const fragmentShaderSrc = \`
   precision mediump float;
   varying vec4 v_color;
 
@@ -94,8 +94,8 @@ const fragmentShader = \`
     gl_FragColor = v_color;
   }
 \`;
-let vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShader);
-let fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShader);
+let vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSrc);
+let fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSrc);
 const program = createProgram(gl, vertexShader, fragmentShader);
 gl.useProgram(program);
 
@@ -126,7 +126,7 @@ function draw() {
 draw();`;
 
 export const ADD_RESOLUTION =
-`const vertexShader = \`
+`const vertexShaderSrc = \`
   attribute vec2 position;
   varying vec4 v_color;
 +++  uniform vec3 resolution;
@@ -167,7 +167,7 @@ export const SET_UNIFORM_RESOLUTION =
 ];`;
 
 export const ADD_TRANSLATION =
-`const trianglevertexShader = \`
+`const vertexShaderSrc = \`
   attribute vec2 position;
   varying vec4 v_color;
   uniform vec3 resolution;
@@ -202,7 +202,7 @@ function draw() {
 +++requestAnimationFrame(draw);`;
 
 export const ROTATING_SCALING_TRIANGLE =
-`const trianglevertexShader = \`
+`const vertexShaderSrc = \`
   attribute vec2 position;
   varying vec4 v_color;
   uniform vec3 resolution;
@@ -213,7 +213,8 @@ export const ROTATING_SCALING_TRIANGLE =
   void main() {
 +++    float newX = (cos(angle) * position.x - sin(angle) * position.y) * scaling.x;
 +++    float newY = (sin(angle) * position.x + cos(angle) * position.y) * scaling.y;
-    vec3 transformedPosition = vec3(position + translation, 0) / resolution * 2.0 - 1.0;
+---    vec3 transformedPosition = vec3(position + translation, 0) / resolution * 2.0 - 1.0;
++++    vec3 transformedPosition = vec3(vec2(newX, newY) + translation, 0) / resolution * 2.0 - 1.0;
     gl_Position = vec4(transformedPosition * vec3(1, -1, 1), 1);
     v_color = gl_Position * 0.5 + 0.5;
   }

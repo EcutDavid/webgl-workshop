@@ -1,6 +1,6 @@
 .NavigationBar {
   display: block;
-  top: calc(100vh - 100px);
+  top: calc(100vh - 70px);
   width: 100vw;
   position: fixed;
   text-align: center;
@@ -25,7 +25,7 @@
 
     p {
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: bold;
       margin: 0;
       z-index: 10;
