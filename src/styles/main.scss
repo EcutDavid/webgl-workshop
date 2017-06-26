@@ -38,11 +38,17 @@ html, body {
   }
 
   p {
+    text-align: left;
     color: rgb(72, 72, 72);
+    margin-bottom: 2px;
   }
 
   .demo-canvas {
     width: 300px;
     height: 300px;
   }
+}
+
+.footer {
+  height: 100px;
 }
