@@ -14,12 +14,12 @@
   <meta property="og:url" content="http://webgl-workshop.com/">
   <meta property="og:type" content="article">
   <meta property="og:description" content="WebGL 101, from 2D rendering to 3D shapes animations, built by David Guan.">
-  <meta property="og:image" content="http://webgl-workshop.com/webgl.png">
+  <meta property="og:image" content="http://webgl-workshop.com/webglText.png">
   <!-- Twitter Cards -->
   <meta name="twitter:title" content="WebGL Workshop">
   <meta name="twitter:url" content="http://webgl-workshop.com/">
   <meta name="twitter:description" content="WebGL 101, from 2D rendering to 3D shapes animations, built by David Guan.">
-  <meta name="twitter:image" content="http://webgl-workshop.com/webgl.png">
+  <meta name="twitter:image" content="http://webgl-workshop.com/webglText.png">
   <meta name="twitter:card" content="summary">
   <!-- SEO -->
   <!-- END - Facebook Open Graph and Twitter Card Tags 2.0.8.2 -->
