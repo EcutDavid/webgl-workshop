@@ -17,12 +17,15 @@ import {
   ROTATING_SCALING_TRIANGLE,
   MATRIX_3BY3,
   APPLYING_MATRIX_3BY3,
+  USER_INTERACTION,
+  CONFIG_3D,
+  MATRIX_4BY4,
+  DRAW_3D
 } from '../constants/code';
 import babelImg from '../images/babel.png';
 import resolutionUniformImg from '../images/resolutionUniform.png';
 import shadersImg from '../images/shaders.png';
 import axisImg from '../images/axis.png';
-import DiffMatchPatch from 'diff-match-patch';
 import drawTriangles from '../steps/drawTriangles';
 import animateTriangle from '../steps/animateTriangle';
 import animate3DShape from '../steps/animate3DShape';
@@ -117,9 +120,20 @@ class Main extends React.Component {
           <p><b>Practice: make the triangle rotating around center point.</b></p>
           <h2 id='sec4'>Step 4: Transform 3D shapes</h2>
           <h3>Final result</h3>
+          <p>To support 3D shapes, we have to repalce the <b>vec2</b> in vertex shaders to <b>vec3</b>.</p>
+          <div className='codeblock'>{CONFIG_3D}</div>
+          <p>And we have to implement the Matrix4By4 class for 3D transform</p>
+          <div className='codeblock'>{MATRIX_4BY4}</div>
+          <p>Now, let's draw shapes using the new points.</p>
+          <div className='codeblock'>{DRAW_3D}</div>
           <canvas className='demo-canvas' id='transform3DShape'></canvas>
           <h2 id='sec5'>Step 5: Implement User Interactions</h2>
+          <p>If scroll to top of this website, try to click the cubes, you will found that's interactive.</p>
+          <p>Actually, these cubes are implemented with WebGL with two events below, please try to build some Interactions with your 3D shapes :)</p>
+          <div className='codeblock'>{USER_INTERACTION}</div>
           <h2 id='sec6'>What's Next?</h2>
+          <p>These two websites help me a lot as reference for WebGL: <a href='https://webglfundamentals.org/' target='_blank'>WebGL Fundamentals</a> and <a href='http://learningwebgl.com/' target='_blank'>Learning WebGL</a>, check out them if you want to knwo more.</p>
+          <p>Although this is a website for WebGL, when it comes to building 3D projects, I still recommend you use frameworks and tools like: <a href='https://threejs.org/' target='_blank'>three.js</a>, <a href='https://aframe.io/' target='_blank'>A-FRAME</a>, <a href='https://facebook.github.io/react-vr/' target='_blank'>React VR</a>, they help your team deliver faster with more maintainable code.</p>
         </div>
         <NavigationBar />
         <div className='footer' />
