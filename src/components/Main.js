@@ -62,7 +62,7 @@ class Main extends React.Component {
       <div>
         <Header />
         <div className='workshop-content'>
-          <p>You can check out the source code for this website in <a href='https://github.com/EcutDavid/webgl-workshop' target='_blank'>the Github repo.</a></p>
+          <p>Welcome! You can check out the source code for this website in <a href='https://github.com/EcutDavid/webgl-workshop' target='_blank'>the Github repo.</a></p>
           <p>If you have any questions or suggestions, please open issues on that repo or send email to <a href='mailto:davidguandev@gmail.com'>davidguandev@gmail.com</a>.</p>
           <p>The javascript code on this website is using es2015 syntax, which is well supported by most of the browsers.</p>
           <p>You can use <a href='https://babeljs.io/repl/'>babeljs.io/repl</a> to transform the code to javascript engine friendlier.</p>
