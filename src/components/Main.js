@@ -19,6 +19,7 @@ import shadersImg from '../images/shaders.png';
 import axisImg from '../images/axis.png';
 import DiffMatchPatch from 'diff-match-patch';
 import drawTriangles from '../steps/drawTriangles';
+import animateTriangle from '../steps/animateTriangle';
 
 function loadCode(code, selector, isJs = true) {
   return CodeMirror(
@@ -41,11 +42,13 @@ class Main extends React.Component {
     }
 
     drawTriangles('#trianglesDemo');
+    animateTriangle('#animateTriangle');
   }
 
   render() {
     return (
       <div>
+        <Header />
         <div className='workshop-content'>
           <p>The javascript code on this website is using es2015 syntax, which is well supported by most of the browsers.</p>
           <p>You can use <a href='https://babeljs.io/repl/'>babeljs.io/repl</a> to transform the code to javascript engine friendlier.</p>
@@ -83,6 +86,8 @@ class Main extends React.Component {
           <img src={resolutionUniformImg}></img>
           <p><b>Practice: draw more than one triangles and control the color using uniform instead of varying.</b></p>
           <h2 id='sec3'>Step 3: Play with Animations</h2>
+          <h3>Final result</h3>
+          <canvas className='demo-canvas' id='animateTriangle'></canvas>
           <h3>Final result</h3>
           <div className='codeblock' id='code'></div>
           <h2 id='sec4'>Step 4: Transform 3D cube</h2>
