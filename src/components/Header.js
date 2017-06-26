@@ -149,7 +149,7 @@ export default class Header extends React.Component {
     const cubes = [];
     const CUBE_ROW_COUNT = 4;
     const CUBE_COL_COUNT = 4;
-    const CUBE_MARGIN = 30;
+    const CUBE_MARGIN = 40;
     for (let i = 0; i < CUBE_ROW_COUNT; i++) {
       for (let j = 0; j < CUBE_COL_COUNT; j++) {
         cubes.push({

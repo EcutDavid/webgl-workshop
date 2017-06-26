@@ -1,6 +1,11 @@
 html, body {
   height: 100%;
   text-align: center;
+
+  .button {
+    background: rgba(0, 83, 159, 0.65);
+    margin: 0;
+  }
 }
 
 .CodeMirror {
@@ -33,7 +38,6 @@ html, body {
   }
 
   p {
-    text-align: left;
     color: rgb(72, 72, 72);
   }
 
