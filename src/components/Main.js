@@ -85,6 +85,7 @@ class Main extends React.Component {
           <div className='codeblock' id='drawTriangles'>{DRAW_TRIANGLES}</div>
           <h2 id='sec2'>Step 2: Understand Shaders</h2>
           <img src={shadersImg}></img>
+          <span className='credit'>(Image source: <a href='https://www.slideshare.net/TakaoWada/graphics-workshop2014-1' target='_blank'>Trident International Graphics Workshop</a>)</span>
           <p>To pass data to shaders, we can use <b>attributes</b>, <b>varying</b>, <b>uniforms</b> and <b>texture</b>. View <a href='https://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html' target='_blank'>this page</a> if you want to know more about them.</p>
           <h3>Uniforms</h3>
           <p>In the previous example, the points are mapped to WebGL's space; we can map the space to the one that we are usually using.</p>
