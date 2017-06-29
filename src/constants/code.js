@@ -271,7 +271,7 @@ export const MATRIX_3BY3 =
 }`;
 
 export const APPLYING_MATRIX_3BY3 =
-`const triangleVertextShader = \`
+`const vertexShaderSrc = \`
   attribute vec2 position;
   varying vec4 v_color;
   uniform vec3 resolution;
