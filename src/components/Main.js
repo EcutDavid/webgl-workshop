@@ -62,10 +62,10 @@ class Main extends React.Component {
       <div>
         <Header />
         <div className='workshop-content'>
-          <p>Welcome! You can check out the source code for this website in <a href='https://github.com/EcutDavid/webgl-workshop' target='_blank'>the Github repo.</a></p>
+          <p>Thanks for visiting! You can check out the source code for this website in <a href='https://github.com/EcutDavid/webgl-workshop' target='_blank'>the Github repo.</a></p>
           <p>If you have any questions or suggestions, please open issues on that repo or send email to <a href='mailto:davidguandev@gmail.com'>davidguandev@gmail.com</a>.</p>
           <p>The javascript code on this website is using es2015 syntax, which is well supported by most of the browsers.</p>
-          <p>You can use <a href='https://babeljs.io/repl/'>babeljs.io/repl</a> to transform the code to javascript engine friendlier.</p>
+          <p>If your browser doesn't support es2015, you can use <a href='https://babeljs.io/repl/'>babeljs.io/repl</a> to transform the code to javascript engine friendlier.</p>
           <img src={babelImg}></img>
           <p>In real-life projects, we will integrate the code transformation into building process for sure.</p>
           <h4 className='get-started'>Let's get started!</h4>
@@ -138,6 +138,8 @@ class Main extends React.Component {
           <h2 id='sec6'>What's Next?</h2>
           <p>These two websites help me a lot as references for WebGL: <a href='https://webglfundamentals.org/' target='_blank'>WebGL Fundamentals</a> and <a href='http://learningwebgl.com/' target='_blank'>Learning WebGL</a>, check out them if you want to know more.</p>
           <p>Although this is a website for WebGL, when it comes to building 3D projects, I still recommend you use frameworks and tools like <a href='https://threejs.org/' target='_blank'>three.js</a>, <a href='https://aframe.io/' target='_blank'>A-FRAME</a>, <a href='https://facebook.github.io/react-vr/' target='_blank'>React VR</a>, they help your team deliver faster with more maintainable code.</p>
+          <br />
+          Made by <a href='https://davidguan.me' target='_blank'>David Guan</a> on Thu Jun 29 2017.
         </div>
         <NavigationBar />
         <div className='footer' />

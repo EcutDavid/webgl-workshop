@@ -70,6 +70,7 @@ const textureCoords = [
 ];
 const canvasDom = document.querySelector('canvas');
 const gl = canvasDom.getContext('webgl');
+if (!gl) alert('Sorry WebGL is not supported by your browser, please try Chrome, Firefox, etc... thanks!');
 
 const canvasWidth = canvasDom.clientWidth;
 const canvasHeight = canvasDom.clientHeight;
